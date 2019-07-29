@@ -669,3 +669,217 @@ class Clock extends React.Component {
     <Clock/>, 
    document.getElementById('root')
   );
+
+
+  //Using State Correctly
+
+//three things you should know
+
+//1.  do not modify state directory
+
+//example
+this.state.comment = 'hello'//wrong
+
+//instead, use setState()
+
+this.setState({comment: 'Hello'});
+
+//the only place to assign this.state is the constructor
+
+//State Updates May be Asysnchronous
+
+
+// correct
+this.setState((state, props) => ({
+  counter: state.counter + props.increment
+}));
+//can also use regular function
+
+this.setState(function(state, props){
+  return{
+    counter: state.counter + props.increment
+  };
+});
+
+
+//state updated are merged
+//setstate()
+
+constructor(props){
+  super(props);
+  this.state = {
+    posts: [],
+    comments: []
+  };
+}
+
+//update the state separately with  setState()
+
+componentDidMount(){
+  fetchPosts().then(response => {
+    this.setState({
+      posts: response.posts
+    });
+  });
+  
+  fetchComments().then(response => {
+    this.setState({
+      comments: response.comments
+    });
+  });
+}
+
+//Using State Correctly
+
+//three things you should know
+
+//1.  do not modify state directory
+
+//example
+this.state.comment = 'hello'//wrong
+
+//instead, use setState()
+
+this.setState({comment: 'Hello'});
+
+//the only place to assign this.state is the constructor
+
+//State Updates May be Asysnchronous
+
+
+// correct
+this.setState((state, props) => ({
+  counter: state.counter + props.increment
+}));
+//can also use regular function
+
+this.setState(function(state, props){
+  return{
+    counter: state.counter + props.increment
+  };
+});
+
+
+//state updated are merged
+//setstate()
+
+constructor(props){
+  super(props);
+  this.state = {
+    posts: [],
+    comments: []
+  };
+}
+
+//update the state separately with  setState()
+
+componentDidMount(){
+  fetchPosts().then(response => {
+    this.setState({
+      posts: response.posts
+    });
+  });
+  
+  fetchComments().then(response => {
+    this.setState({
+      comments: response.comments
+    });
+  });
+}
+
+//
+
+//lifectcle and state
+function FormattedDate(props) {
+    return <h2>It is {props.date.toLocaleTimeString()}.</h2>;
+  }
+  
+  class Clock extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {date: new Date()};
+    }
+  
+    componentDidMount() {
+      this.timerID = setInterval(
+        () => this.tick(),
+        1000
+      );
+    }
+  
+    componentWillUnmount() {
+      clearInterval(this.timerID);
+    }
+  
+    tick() {
+      this.setState({
+        date: new Date()
+      });
+    }
+  
+    render() {
+      return (
+        <div>
+          <h1>Hello, world!</h1>
+          <FormattedDate date={this.state.date} />
+        </div>
+      );
+    }
+  }
+  
+  ReactDOM.render(
+    <Clock />,
+    document.getElementById('root')
+  );
+  
+
+
+  //calling top dwon
+//undirectional data flow
+function FormattedDate(props){
+    return <p>It is {props.date.toLocaleTimeString()}.</p>;
+  }
+  
+  class Clock extends React.Component{
+    constructor(props){
+      super(props);
+      this.state = {date: new Date()};
+    }
+    
+    componentDidMount(){
+      this.timerID = setInterval(
+      ()=> this.tick(),
+      1000
+      );
+    }
+    componentWillUnmount(){
+      clearInterval(this.timerID);
+    }
+    
+    tick(){
+      this.setState({
+        date: new Date()
+      });
+    }
+    
+    render(){
+      return (
+        <div>
+          <h1>Hello world.</h1>
+          <FormattedDate date={this.state.date}/>
+        </div>
+      )
+    }
+  }
+  
+  function App(){
+    return(
+      <div>
+        <Clock/>
+         <Clock/>
+         <Clock/>
+      </div>
+    )
+  }
+  
+  ReactDOM.render(<App />, document.getElementById('root'));
