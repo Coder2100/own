@@ -883,3 +883,248 @@ function FormattedDate(props){
   }
   
   ReactDOM.render(<App />, document.getElementById('root'));
+
+  //toggle button on and off
+
+  class Toggle extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {isToggleOn: true};
+  
+      // This binding is necessary to make `this` work in the callback
+      this.handleClick = this.handleClick.bind(this);
+    }
+  
+    handleClick() {
+      this.setState(prevState => ({
+        isToggleOn: !prevState.isToggleOn
+      }));
+    }
+  
+    render() {
+      return (
+        <button onClick={this.handleClick}>
+          {this.state.isToggleOn ? 'ON' : 'OFF'}
+        </button>
+      );
+    }
+  }
+  
+  ReactDOM.render(
+    <Toggle />,
+    document.getElementById('root')
+  );
+
+
+// passing argunt to an event listener
+
+//<button onClick={(e) => this.deleteRow(id, e)}> Delete</button>
+<button onClick={(e) => this.deleteRow(id, e)}>Delete Row</button>
+
+//<button onClick={this.deleteRow.bind(this, id)}> Delete</button>
+
+<button onClick={this.deleteRow.bind(this, id)}>Delete Row</button>
+
+// conditional rendering
+
+//in react you create a distinct component that encapsulate the behaviour you need
+
+// then you render only some of them depending on the state of your application
+
+//use if else else if
+
+function UserGreeting(props){
+  return <h1>Welcome back.</h1>;
+}
+
+function GuestGreeting(props){
+  return <h1>Please register.</h1>;
+}
+
+//greeting
+function Greeting(props){
+  const isLoggedIn = props.isLoggedIn;
+  if (isLoggedIn){
+    return <UserGreeting />;
+  }
+  return <GuestGreeting />;
+}
+
+ReactDOM.render(
+  //try changing to isloggedin ={true}
+  <Greeting isLoggedIn={false} />,
+  //<Greeting isLoggedIn={true}/>,
+  document.getElementById('root')
+);
+
+//login and logout working example
+class LoginControl extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleLoginClick = this.handleLoginClick.bind(this);
+    this.handleLogoutClick = this.handleLogoutClick.bind(this);
+    this.state = {isLoggedIn: false};
+  }
+
+  handleLoginClick() {
+    this.setState({isLoggedIn: true});
+  }
+
+  handleLogoutClick() {
+    this.setState({isLoggedIn: false});
+  }
+
+  render() {
+    const isLoggedIn = this.state.isLoggedIn;
+    let button;
+
+    if (isLoggedIn) {
+      button = <LogoutButton onClick={this.handleLogoutClick} />;
+    } else {
+      button = <LoginButton onClick={this.handleLoginClick} />;
+    }
+
+    return (
+      <div>
+        <Greeting isLoggedIn={isLoggedIn} />
+        {button}
+      </div>
+    );
+  }
+}
+
+function UserGreeting(props) {
+  return <h1>Welcome back!</h1>;
+}
+
+function GuestGreeting(props) {
+  return <h1>Please sign up.</h1>;
+}
+
+function Greeting(props) {
+  const isLoggedIn = props.isLoggedIn;
+  if (isLoggedIn) {
+    return <UserGreeting />;
+  }
+  return <GuestGreeting />;
+}
+
+function LoginButton(props) {
+  return (
+    <button onClick={props.onClick}>
+      Login
+    </button>
+  );
+}
+
+function LogoutButton(props) {
+  return (
+    <button onClick={props.onClick}>
+      Logout
+    </button>
+  );
+}
+
+ReactDOM.render(
+  <LoginControl />,
+  document.getElementById('root')
+);
+
+
+//shorter syntax for an if and && statement
+//simulatin inbox
+
+function Mailbox(props){
+  const unreadMessages = props.unreadMessages;
+  return (
+    <div>
+      <h1>Hello</h1>
+      {unreadMessages.length > 0 && 
+        <h2>
+          You have {unreadMessages.length} unread messages.
+        </h2>
+      }
+    </div>
+  );
+}
+
+const messages = ['React', 'Re: React', 'Re:Re:React'];
+
+ReactDOM.render(
+  <Mailbox unreadMessages={messages} />,
+  document.getElementById('root')
+);
+
+
+//inline if else with conditonal operator
+
+render(){
+  const isLoggedIn = this.state.isLoggedIn;
+  return(
+    <div>
+      The user is <b>{isLoggedIn ? 'currently' : 'not'}</b> logged in .
+    </div>
+  );
+}
+
+//in larger expression
+
+render(){
+  const isLoggedIn = this.state.isLoggedIn;
+  return(
+    <div>
+      {isLoggedIn ? (
+        <LogoutButton onClick={this.handleLogoutClick} />
+      ) : (
+        <LoginButton onClick={this.handleLoginClick}/>
+      )}
+    </div>
+  );
+}
+/*remember that whenever conditions become too complex, it might be a good time to extract a component.
+
+*/
+
+//warinig  like burner ads to simulate the ads words method
+
+function WarningBanner(props) {
+  if (!props.warn) {
+    return null;
+  }
+
+  return (
+    <div className="warning">
+      Warning!
+    </div>
+  );
+}
+
+class Page extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {showWarning: true}
+    this.handleToggleClick = this.handleToggleClick.bind(this);
+  }
+
+  handleToggleClick() {
+    this.setState(prevState => ({
+      showWarning: !prevState.showWarning
+    }));
+  }
+  
+  render() {
+    return (
+      <div>
+        <WarningBanner warn={this.state.showWarning} />
+        <button onClick={this.handleToggleClick}>
+          {this.state.showWarning ? 'Hide' : 'Show'}
+        </button>
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(
+  <Page />,
+  document.getElementById('root')
+);
