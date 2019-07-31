@@ -1128,3 +1128,699 @@ ReactDOM.render(
   <Page />,
   document.getElementById('root')
 );
+
+//Accept list of numbers and using map to loop through
+
+const numbers = [1, 2, 3, 4, 5];
+const listItems = numbers.map((numbers) =>
+  <li>{numbers}</li>
+);
+
+ReactDOM.render(
+  <ul>{listItems}</ul>,
+  document.getElementById('root')
+)
+
+//loop inside a component
+function NumberList(props){
+  const numbers = props.numbers;
+  const listItems = numbers.map((number) => <li>{number}</li>
+    );
+    return (
+   <li>{listItems}</li>);
+  
+}
+const numbers = [1,2,3,4,5,6,7,8,9];
+ReactDOM.render(
+  <NumberList numbers={numbers}/>,
+  document.getElementById('root')
+);
+
+//
+//keys
+//keys help recat identify which items have changed , are removed
+// keys shoyld be given to the elements inside the array to give the element a stable identity
+
+const numbers = [1,2,3,4,5,6,7,8,9, 0];
+const listItems = numbers.map((number) => <li key=number.toString()>{number}</li>);
+                              
+//use  IDs to identify keys
+const todoItems = todos.map((todo) => <li key={todo.id}>{todo.text}</li>);
+
+//when you dont havea satble id use item index 
+
+
+//keys
+//correct usage of Key
+function ListItem(props){
+  //There is no need to specify a key
+  return <li>{props.value}</li>;
+}
+//A good rule of thumb is that elements inside the map() call need keys.
+
+
+function NumberList(props){
+  const numbers = props.numbers;
+  const listItems = numbers.map((number) =>//Keys should be specified inside the array
+     <ListItem key={number.toString()} value={number} />);
+  return (
+  <ul>
+    {listItems}
+  </ul>
+ );
+}
+
+const numbers = [1,2,3,4,5,6,7,8,9,0];
+ReactDOM.render(
+<NumberList numbers={numbers}/>,
+document.getElementById('root'));
+
+
+//blog posts simulation
+
+//keys must only be uique among siblings
+
+function Blog(props){
+  const sidebar = (
+  <ul>
+      {props.posts.map((post) => <li key={post.id}> {post.title}</li>)}
+    </ul>
+  );
+  const content = props.posts.map((post) =>
+            <div key={post.id}>
+              <h3>{post.title}</h3>
+              <p>{post.content}</p>
+            </div>
+           );
+             return (
+            <div>{sidebar} <hr /> {content}</div>
+           );
+}
+
+const posts = [
+  {id:1, title: 'Hello sizwe', content: 'welcome to school!'},
+  {id:2, title: 'install things', content: 'this is the better way to install ReactJS.'}
+];
+
+ReactDOM.render(
+  <Blog posts={posts} />,
+    document.getElementById('root')
+);
+
+
+//keys serves a hint to React but they dont get passed to your component
+//if you need the same value in your compoent, pass it explicitly as a prop with a different na,e
+
+//non production examplar
+const content = posts.map((post) => 
+  <Post
+    key = {post.id}
+    id= {post.id}
+   title={post.title}
+   />
+ );
+  //declaring separate list items
+function NumberList(props){
+  const numbers = props.numbers;
+  const listItems = numbers.map((number) => 
+  <ListItem 
+    key={number.toString()}
+    value={number} 
+    />
+  );
+   
+   return(
+   <ul>
+     {listItems}
+   </ul>
+  );
+}
+
+
+//embedding map in jsx
+
+function ListItems(props){
+  return <li>{props.value}</li>;
+}
+
+function NumberList(props){
+  const numbers = props.numbers;
+  return (
+    <ul>
+      {numbers.map((number) =>
+       <ListItems 
+         key={number.toString()}
+         value={number}
+         />
+                 
+      )}
+    </ul>
+  );
+}
+
+const numbers = [1,2,3,4,5,6,7,8,9,0];
+ReactDOM.render(
+  <NumberList numbers={numbers} />,
+  document.getElementById('root')
+);
+
+
+//controlled components to enable form submission
+
+//create component
+class NameForm extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {value: ''};
+    
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+  handleChange(event){
+    this.setState({value: event.target.value});
+  }
+  handleSubmit(event){
+    alert('Hello: ' + this.state.value);
+    event.preventDefault();
+  }
+  
+  render(){
+    return(
+    <form onSubmit={this.handleSubmit}>
+      <label>
+        Name:
+        <input type="text" value={this.state.value} onChange={this.handleChange}/>
+      </label>
+      <input type="submit" value="Submit"/>
+    </form>
+      );
+  }
+}
+
+ReactDOM.render(
+  <NameForm />,
+  document.getElementById('root')
+);
+
+
+//validate user input
+//sample does not output stuff
+
+//handleChange(event){
+//  this.setState({value: event.target.value.toUpperCase()});
+//}
+
+//text area tag
+//<textarea>
+ // Hello Stranger, this is the time to write soem text.
+//</textarea>
+//in react a <> uses a value attr.
+//this can be written like a form with single input
+
+class EssayForm extends React.Component{
+  constructor(props){
+    super(props);
+      this.state = {
+        value: 'Please write the essay about the most miserable day of your life.'
+      };
+      this.handleChange = this.handlechange.bind(this);
+      this.handlesubmit = this.handleSubmit.bind(this);
+    }
+    
+    handleChange(event){
+      this.setState({value: event.target.value});
+    }
+    
+    handleSubmit(event){
+      alert('An essay was submitted: '+ this.state.value);
+      event.preventDefault();
+    }
+    
+    render(){
+      return(
+        <form onSubmit={this.handleSubmit}>
+          <label>
+            Essay:
+            <textarea 
+              value={this.state.value}
+              onChange={this.handleChange}
+            />
+          
+          </label>
+          <input type="submit" value="Sumbit"/>
+        </form>
+      );
+    }
+  }
+
+
+  //validate user input
+//sample does not output stuff
+
+handleChange(event){
+  this.setState({value: event.target.value.toUpperCase()});
+ }
+ 
+ //text area tag
+ <textarea>
+   Hello Stranger, this is the time to write soem text.
+ </textarea>
+ //in react a <> uses a value attr.
+ //this can be written like a form with single input
+ 
+ class EssayForm extends React.Component{
+   constructor(props){
+     super(props);
+       this.state = {
+         value: 'Please write the essay about the most miserable day of your life.'
+       };
+       this.handleChange = this.handlechange.bind(this);
+       this.handlesubmit = this.handleSubmit.bind(this);
+     }
+     
+     handleChange(event){
+       this.setState({value: event.target.value});
+     }
+     
+     handleSubmit(event){
+       alert('An essay was submitted: '+ this.state.value);
+       event.preventDefault();
+     }
+     
+     render(){
+       return(
+         <form onSubmit={this.handleSubmit}>
+           <label>
+             Essay:
+             <textarea 
+               value={this.state.value}
+               onChange={this.handleChange}
+             />
+ 
+           </label>
+           <input type="submit" value="Sumbit"/>
+         </form>
+       );
+     }
+   }
+ 
+ ReactDOM.render(
+   <EssayForm />,
+   document.getElementById('root')
+   
+ );
+
+ 
+ //control compoent with select list
+
+class FlavorForm extends React.Component{
+  constructor(props){
+    super(props);
+    this.state = {value: 'coconut'};
+    
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    
+  }
+  handleChange(event){
+    this.setState({value: event.target.value});
+  }
+  
+  handleSubmit(event){
+    alert('Your favorite flavor is: ' + this.state.value);
+    event.preventDefault();
+  }
+  
+  render(){
+    return(
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          Pick your favourite flavour:
+          <select value={this.state.value} onChange={this.handleChange}>
+            <option value="grapefruit"> Grapefruit</option>
+            <option value="peach"> Peach</option>
+            <option value="apple">Apple</option>
+            <option value="orange">Orange</option>
+            <option value="coconut">Coconut</option>
+          </select>
+        </label>
+        <input type="submit" value="Submit"/>
+      </form>
+    );
+  }
+}
+
+ReactDOM.render(
+  < FlavorForm />,
+  document.getElementById('root')
+);
+//
+
+//Handles Multiple inputs
+class Reservation extends React.Component{
+  constructor(props){
+    super(props);
+    this.state = {
+      isGoing: true,
+      numberOfGuests: 6
+    };
+    this.handleInputChange = this.handleInputChange.bind(this);
+  }
+  handleInputChange(event){
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+    
+    this.setState({
+      [name]: value
+    });
+  }
+  
+  render(){
+    return(
+      <form>
+        <label>
+          Is going:
+          <input
+            name="isGoing"
+            type="checkbox"
+            checked={this.state.isGoing}
+            onChange={this.handleInputChange}
+            />
+        </label>
+        <br />
+        <label>
+          Number of guests:
+          <input
+            name="numberOfGuests"
+            type="number"
+            value={this.state.numberOfGuests}
+            onChange={this.handleInputChange}
+            />
+        </label>
+      </form>
+    );
+  }
+}
+
+ReactDOM.render(
+  <Reservation />,
+  document.getElementById('root')
+);
+
+
+//lifting state up
+//create component BoilingVerdict
+
+function BoilingVerdict(props){
+  if(props.celsius >= 100){
+    return <p>The water would boil.</p>;
+    
+  }
+  return <p>The water would not boil.</p>;
+}
+
+//create component Calculator
+class Calculator extends React.Component{
+  constructor(props){
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+    this.state = {temperature: ''};
+  }
+  
+  handleChange(e){
+    this.setState({temperature: e.target.value});
+  }
+  
+  render(){
+    const temperature = this.state.temperature;
+    return(
+      <fieldset>
+        <legend>Enter temperature in celsius:</legend>
+        <input 
+          value={temperature}
+          onChange={this.handleChange}
+          />
+         <BoilingVerdict celsius={parseFloat(temperature)} />
+      </fieldset>
+    );
+  }
+}
+
+ReactDOM.render(
+< Calculator />,
+  document.getElementById('root')
+);
+
+//fnacy border using composition
+
+function FancyBorder(props) {
+  return (
+    <div className={'FancyBorder FancyBorder-' + props.color}>
+      {props.children}
+    </div>
+  );
+}
+
+function WelcomeDialog() {
+  return (
+    <FancyBorder color="blue">
+      <h1 className="Dialog-title">
+        Welcome
+      </h1>
+      <p className="Dialog-message">
+        Thank you for visiting our spacecraft!
+      </p>
+    </FancyBorder>
+  );
+}
+
+ReactDOM.render(
+  <WelcomeDialog />,
+  document.getElementById('root')
+);
+/*.FancyBorder {
+  padding: 10px 10px;
+  border: 10px solid;
+}
+
+.FancyBorder-blue {
+  border-color: blue;
+}
+
+.Dialog-title {
+  margin: 0;
+  font-family: sans-serif;
+}
+
+.Dialog-message {
+  font-size: larger;
+   */
+
+//slack like interface
+
+function Contacts() {
+  return <div className="Contacts" />;
+}
+
+function Chat() {
+  return <div className="Chat" />;
+}
+
+function SplitPane(props) {
+  return (
+    <div className="SplitPane">
+      <div className="SplitPane-left">
+        {props.left}
+      </div>
+      <div className="SplitPane-right">
+        {props.right}
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <SplitPane
+      left={
+        <Contacts />
+      }
+      right={
+        <Chat />
+      } />
+  );
+}
+
+ReactDOM.render(
+  <App />,
+  document.getElementById('root')
+);
+//css
+/*html, body, #root {
+  width: 100%;
+  height: 100%;
+}
+
+.SplitPane {
+  width: 100%;
+  height: 100%;
+}
+
+.SplitPane-left {
+  float: left;
+  width: 30%;
+  height: 100%;
+}
+
+.SplitPane-right {
+  float: left;
+  width: 70%;
+  height: 100%;
+}
+
+.Contacts {
+  width: 100%;
+  height: 100%; 
+  background: lightblue;
+}
+
+.Chat {
+  width: 100%;
+  height: 100%; 
+  background: pink;
+}
+ */
+
+ //fancy dialog with SPECIALIZATION
+
+ function FancyBorder(props) {
+  return (
+    <div className={'FancyBorder FancyBorder-' + props.color}>
+      {props.children}
+    </div>
+  );
+}
+
+function Dialog(props) {
+  return (
+    <FancyBorder color="blue">
+      <h1 className="Dialog-title">
+        {props.title}
+      </h1>
+      <p className="Dialog-message">
+        {props.message}
+      </p>
+    </FancyBorder>
+  );
+}
+
+function WelcomeDialog() {
+  return (
+    <Dialog
+      title="Welcome"
+      message="Thank you for visiting our spacecraft!" />
+  );
+}
+
+ReactDOM.render(
+  <WelcomeDialog />,
+  document.getElementById('root')
+);
+// Acampanying css
+/**
+ .FancyBorder {
+  padding: 10px 10px;
+  border: 10px solid;
+}
+
+.FancyBorder-blue {
+  border-color: blue;
+}
+
+.Dialog-title {
+  margin: 0;
+  font-family: sans-serif;
+}
+
+.Dialog-message {
+  font-size: larger;
+}
+ */
+
+ //using class to create composition
+ function FancyBorder(props) {
+  return (
+    <div className={'FancyBorder FancyBorder-' + props.color}>
+      {props.children}
+    </div>
+  );
+}
+
+function Dialog(props) {
+  return (
+    <FancyBorder color="blue">
+      <h1 className="Dialog-title">
+        {props.title}
+      </h1>
+      <p className="Dialog-message">
+        {props.message}
+      </p>
+      {props.children}
+    </FancyBorder>
+  );
+}
+
+class SignUpDialog extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSignUp = this.handleSignUp.bind(this);
+    this.state = {login: ''};
+  }
+
+  render() {
+    return (
+      <Dialog title="Mars Exploration Program"
+              message="How should we refer to you?">
+        <input value={this.state.login}
+               onChange={this.handleChange} />
+        <button onClick={this.handleSignUp}>
+          Sign Me Up!
+        </button>
+      </Dialog>
+    );
+  }
+
+  handleChange(e) {
+    this.setState({login: e.target.value});
+  }
+
+  handleSignUp() {
+    alert(`Welcome aboard, ${this.state.login}!`);
+  }
+}
+
+ReactDOM.render(
+  <SignUpDialog />,
+  document.getElementById('root')
+);
+/*
+.FancyBorder {
+  padding: 10px 10px;
+  border: 10px solid;
+}
+
+.FancyBorder-blue {
+  border-color: blue;
+}
+
+.Dialog-title {
+  margin: 0;
+  font-family: sans-serif;
+}
+
+.Dialog-message {
+  font-size: larger;
+}
+ */
